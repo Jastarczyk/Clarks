@@ -6,6 +6,18 @@
 *.user
 *.userosscache
 *.sln.docstates
+*Assets/Animations
+*Assets/FreeCharacter
+*Assets/HandGun
+*Assets/Materials
+*Assets/Prefabs
+*Assets/Resources
+*Assets/Scenes
+*Assets/Sounds
+*Library
+*ProjectSettings
+*Temp
+*UnityPackageManager
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
