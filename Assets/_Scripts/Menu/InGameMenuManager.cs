@@ -68,7 +68,7 @@ public class InGameMenuManager : MonoBehaviour
 		deadPlayerGO.SetActive(false);
 		LanguageChange();
     }
-
+    //TODO rework whole script
 	void Update () 
 	{
 		CountDown();

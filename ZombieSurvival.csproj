@@ -293,6 +293,7 @@
     <Compile Include="Assets\_Scripts\AttachedToObjects\Weapons\Pistol.cs" />
     <Compile Include="Assets\_Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\_Scripts\Enemy\EnemyAnimationManager.cs" />
+    <Compile Include="Assets\_Scripts\Enemy\EnemyHealth.cs" />
     <Compile Include="Assets\_Scripts\Enemy\EnemyHealthManagement.cs" />
     <Compile Include="Assets\_Scripts\Enemy\EnemySoundManagement.cs" />
     <Compile Include="Assets\_Scripts\Enemy\EnemySpawner.cs" />
@@ -300,6 +301,8 @@
     <Compile Include="Assets\_Scripts\Global\DifficultyManager.cs" />
     <Compile Include="Assets\_Scripts\Global\GlobalTimer.cs" />
     <Compile Include="Assets\_Scripts\Global\Languages.cs" />
+    <Compile Include="Assets\_Scripts\Global\LocalizationItem.cs" />
+    <Compile Include="Assets\_Scripts\Global\LocalizationManager.cs" />
     <Compile Include="Assets\_Scripts\Global\MusicBoxManager.cs" />
     <Compile Include="Assets\_Scripts\Global\ObjectDestroyManager.cs" />
     <Compile Include="Assets\_Scripts\Global\Scoring.cs" />
@@ -317,7 +320,6 @@
     <Compile Include="Assets\_Scripts\Player\PlayerShooting.cs" />
     <Compile Include="Assets\_Scripts\Player\Shooting\BulletScript.cs" />
     <Compile Include="Assets\_Scripts\Player\Shooting\BulletsLost.cs" />
-    <Compile Include="Assets\_Scripts\Utilities\Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

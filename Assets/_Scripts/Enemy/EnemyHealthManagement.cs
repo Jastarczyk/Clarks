@@ -8,15 +8,8 @@ namespace Assets._Scripts.Enemy
 {
     [RequireComponent(typeof(Transform))]
 
-    class EnemyHealthManagement : MonoBehaviour
+    class EnemyHealthManagement : EnemyHealth
     {
-        public bool IsAlive { get; private set; }
-
-        [SerializeField]
-        public float MaximumHealth { get; private set; }
-
-        public float CurrentHealth { get; private set; }
-
         private Transform enemyTransform;
 
         private void Awake()

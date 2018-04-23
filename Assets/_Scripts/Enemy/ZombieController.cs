@@ -21,7 +21,7 @@ public class ZombieController : MonoBehaviour
     private float IncreaseSpeedTimePeroid = 1f;
 
     private EnemySoundManagement soundManager;
-    private EnemyHealthManagement healthManagement;
+    private EnemyHealthManagement enemyHealthManagement;
 
     private CapsuleCollider zombieCollider;
     private EnemyAnimationManager zombieAnimator;
@@ -33,7 +33,7 @@ public class ZombieController : MonoBehaviour
         scoring = GameObject.Find("ScoreDisplay").GetComponent<Scoring>();
 
         soundManager = GetComponent<EnemySoundManagement>();
-        healthManagement = GetComponent<EnemyHealthManagement>();
+        enemyHealthManagement = GetComponent<EnemyHealthManagement>();
 
         zombieCollider = GetComponent<CapsuleCollider>();
         zombieAnimator = GetComponent<EnemyAnimationManager>();
@@ -48,7 +48,7 @@ public class ZombieController : MonoBehaviour
     private void Update()
     {
         //when zombie dies
-        if (!healthManagement.IsAlive)
+        if (!enemyHealthManagement.IsAlive)
         {
             navMeshAgent.SetDestination(this.transform.position);
             return;
@@ -79,12 +79,13 @@ public class ZombieController : MonoBehaviour
         }
     }
 
+    //rework it kinda
     void OnTriggerStay()
     {
         if (hitTimer > damageCooldown)
         {
             zombieAnimator.PlayAttackAnimation();
-            soundManager.PlayRandomAttackSound();
+            soundManager.PlayRandomSoundOfType(AudioClipsTypes.Attack);
             hitTimer = 0;
         }
     }
@@ -92,9 +93,9 @@ public class ZombieController : MonoBehaviour
     private void ZombieDeath()
     {
         zombieCollider.enabled = false;
-        healthManagement.Kill();
+        enemyHealthManagement.Kill();
 
-        soundManager.PlayRandomDeathSound();
+        soundManager.PlayRandomSoundOfType(AudioClipsTypes.Death);
         zombieAnimator.PlayDeathAnimation();
 
         Destroy(this.gameObject, 3f);

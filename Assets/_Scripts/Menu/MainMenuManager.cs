@@ -40,6 +40,8 @@ public class MainMenuManager : MonoBehaviour
 
 		if(PlayerPrefs.GetString("gameLanguage") == "Polish")
 		{
+            //load JSON
+
             controlText[0].text = "do góry";
             controlText[1].text = "w lewo";
             controlText[2].text = "w prawo";

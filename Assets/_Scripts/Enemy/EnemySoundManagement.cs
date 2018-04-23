@@ -6,6 +6,13 @@ using UnityEngine;
 
 namespace Assets._Scripts.Enemy
 {
+    internal enum AudioClipsTypes
+    {
+        Standard,
+        Attack,
+        Death
+    }
+
     [RequireComponent(typeof(AudioSource))]
 
     class EnemySoundManagement : MonoBehaviour
@@ -14,6 +21,8 @@ namespace Assets._Scripts.Enemy
         public AudioClip[] AttackSounds;
         public AudioClip[] DeathSounds;
 
+        private AudioClip[] chosenCollection;
+
         private AudioSource audioSource;
 
         private void Start()
@@ -21,27 +30,26 @@ namespace Assets._Scripts.Enemy
             audioSource = GetComponent<AudioSource>();
         }
 
-        //TODO rework
-        public void PlayRandomStandardSound()
+        public void PlayRandomSoundOfType(AudioClipsTypes type)
         {
-            int randomClip = UnityEngine.Random.Range(0, StandardSounds.Length);
-            audioSource.clip = StandardSounds[randomClip];
+            switch (type)
+            {
+                case AudioClipsTypes.Standard:
+                    chosenCollection = StandardSounds;
+                    break;
+
+                case AudioClipsTypes.Attack:
+                    chosenCollection = AttackSounds;
+                    break;
+
+                case AudioClipsTypes.Death:
+                    chosenCollection = DeathSounds;
+                    break;
+            }
+
+            int randomClip = UnityEngine.Random.Range(0, chosenCollection.Length);
+            audioSource.clip = chosenCollection[randomClip];
             audioSource.Play();
         }
-
-        public void PlayRandomAttackSound()
-        {
-            int randomClip = UnityEngine.Random.Range(0, AttackSounds.Length);
-            audioSource.clip = AttackSounds[randomClip];
-            audioSource.Play();
-        }
-
-        public void PlayRandomDeathSound()
-        {
-            int randomClip = UnityEngine.Random.Range(0, DeathSounds.Length);
-            audioSource.clip = DeathSounds[randomClip];
-            audioSource.Play();
-        }
-
     }
 }

@@ -2,7 +2,13 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class Languages : MonoBehaviour {
+public class Languages : MonoBehaviour
+{
+    public enum Language
+    {
+        Polish,
+        English
+    }
 
 	Slider languageSlider;
 

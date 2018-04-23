@@ -25,6 +25,7 @@ public class IntroLanguageManager : MonoBehaviour {
 		info.SetActive(false);
 	}
 
+    //TODO change it to XML ?
 	void Start () 
 	{
 	
