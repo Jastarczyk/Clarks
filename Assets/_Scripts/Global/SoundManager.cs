@@ -13,7 +13,6 @@ public class SoundManager : MonoBehaviour {
 		soundValueText = GameObject.Find("soundNumberValue").GetComponent<Text>();
 		soundSlider.value = PlayerPrefs.GetFloat("soundVolume");
 	}
-
 	
 	void Update () 
 	{

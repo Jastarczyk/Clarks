@@ -1,0 +1,68 @@
+﻿  {
+  "ItemsCollection": [
+    {
+      "ItemName": "LanguageTextLabel",
+      "Text": "Language"
+    },
+
+    {
+      "ItemName": "PolishLanguageLabel",
+      "Text": "Polish"
+    },
+
+    {
+      "ItemName": "SaveButtonText",
+      "Text": "Apply"
+    },
+
+    {
+      "ItemName": "EnglishLanguageLabel",
+      "Text": "English"
+    },
+
+    {
+      "ItemName": "SettingsMoveUpLabel",
+      "Text": "Up"
+    },
+
+    {
+      "ItemName": "SettingsMoveDownLabel",
+      "Text": "Down"
+    },
+
+    {
+      "ItemName": "SettingsMoveRightLabel",
+      "Text": "Right"
+    },
+
+    {
+      "ItemName": "SettingsMoveLeftLabel",
+      "Text": "Left"
+    },
+
+    {
+      "ItemName": "SettingsShootLabel",
+      "Text": "Shoot"
+    },
+
+    {
+      "ItemName": "SettingsReloadLabel",
+      "Text": "Reload"
+    },
+
+    {
+      "ItemName": "SettingsFlashlightLabel",
+      "Text": "Flashlight"
+    },
+
+    {
+      "ItemName": "DeveloperLabel",
+      "Text": "Developer"
+    },
+
+    {
+      "ItemName": "TestersLabel",
+      "Text": "Testers"
+    }
+  ]
+  }

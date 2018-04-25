@@ -1,90 +1,60 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Assets._Scripts.Configuration.GameConfig;
+using Assets._Scripts.Global;
+using System;
 
 public class MainMenuManager : MonoBehaviour 
 {
-
-	public GameObject prefsPanel;
+    public GameObject prefsPanel;
 	public GameObject creditsPanel;
 	public GameObject controlPanel;
 
-	public Text languageText;
-	public Text polskiText;
-	public Text englishText;
-	public Text applyText;
+    public Slider LanguageSlider;
 
-	public Text developerText;
-	public Text testersText;
+    private GameConfigManager gameConfigManager;
+    private LocalizationManager localizationManager;
+    private Text[] MenuTextItems;
 
-    public Text[] controlText;
+    private void Awake()
+    {
+        gameConfigManager = new GameConfigManager();
+        localizationManager = new LocalizationManager();
+        MenuTextItems = GetComponentsInChildren<Text>();
+    }
 
-	void Start () 
+    private void Start () 
 	{
 		prefsPanel.SetActive(false);
 		creditsPanel.SetActive(false);
 		controlPanel.SetActive(false);
 
-		AudioListener.volume = PlayerPrefs.GetFloat("soundVolume");
-	}
+        SetMenuLocalizationText();
+        SetLanguageSliderPossition();
 
-	void Update () 
+    }
+
+    private void Update () 
 	{
 		if(Input.GetKeyUp(KeyCode.Escape))
 		{
-		   DisActivePrefPanel();
+		    DisactivePrefPanel();
 			creditsPanel.SetActive(false);
 			controlPanel.SetActive(false);
-		}
-
-		if(PlayerPrefs.GetString("gameLanguage") == "Polish")
-		{
-            //load JSON
-
-            controlText[0].text = "do góry";
-            controlText[1].text = "w lewo";
-            controlText[2].text = "w prawo";
-            controlText[3].text = "w dół";
-            controlText[4].text = "strzał";
-            controlText[5].text = "przeładowanie";
-            controlText[6].text = "latarka";
-
-            languageText.text = "Język";
-			polskiText.text = "polski";
-			englishText.text = "angielski";
-			applyText.text = "Zapisz";
-			developerText.text = "Projektant: ";
-			testersText.text = "Testerzy: ";
-		}
-		else 
-		{
-            controlText[0].text = "up";
-            controlText[1].text = "left";
-            controlText[2].text = "right";
-            controlText[3].text = "down";
-            controlText[4].text = "shot";
-            controlText[5].text = "reload";
-            controlText[6].text = "flashlight";
-
-            languageText.text = "Language";
-			polskiText.text = "polish";
-			englishText.text = "english";
-			applyText.text = "Save";
-			developerText.text = "Developer: ";
-			testersText.text = "Testers: ";
 		}
 	}
 
 
-	public void OnPrefClick()
+    private void OnPrefClick()
 	{
 		prefsPanel.SetActive(true);
 		creditsPanel.SetActive(false);
 		controlPanel.SetActive(false);
 	}
 
-	public void onStartClick()
+    private void onStartClick()
 	{
         if (PlayerPrefs.GetInt("introDisplay") == 0)
             SceneManager.LoadScene("intro");
@@ -92,47 +62,116 @@ public class MainMenuManager : MonoBehaviour
 
     }
 
-	public void OnExitClick()
+    private void OnExitClick()
 	{
 		Application.Quit();
 	}
 
-	public void OnApplyClick()
+    private void OnApplyClick()
 	{
 		PlayerPrefs.SetFloat("soundVolume", AudioListener.volume);
 		Debug.Log (PlayerPrefs.GetFloat("soundVolume"));
-		DisActivePrefPanel();
+		DisactivePrefPanel();
 	}
 
-	void ActivePrefPanel()
+	private void ActivePrefPanel()
 	{
 		prefsPanel.SetActive(true);
 		creditsPanel.SetActive(false);
 		controlPanel.SetActive(false);
 	}
 
-	void DisActivePrefPanel()
+	private void DisactivePrefPanel()
 	{
 		prefsPanel.SetActive(false);
 	}
 
-	public void OnClickCredits()
+    private void OnClickCredits()
 	{
 		creditsPanel.SetActive(true);
 		prefsPanel.SetActive(false);
 		controlPanel.SetActive(false);
 	}
 
-	public void OnGamePadClick()
+	private void OnGamePadClick()
 	{
 		controlPanel.SetActive(true);
 		creditsPanel.SetActive(false);
 		prefsPanel.SetActive(false);
 	}
 
-	public void OnClickOkCredits()
+    private void OnClickOkCredits()
 	{
 		creditsPanel.SetActive(false);
 		controlPanel.SetActive(false);
-	}	
+	}
+
+    private void SetLanguageSliderPossition()
+    {
+        // TODO refactoring
+        LanguageSlider.value = GameConfigManager.GetGameSettings().Language.Equals("English") ?  1 : default(float);
+    }
+
+    //TODO refactor it lately
+    private void SetMenuLocalizationText()
+    {
+        try
+        {
+            MenuTextItems.Where(x => x.transform.name.Equals("LanguageTextLabel")).FirstOrDefault().text = localizationManager
+                                                                                                            .GetLocalizationDictionary()
+                                                                                                            ["LanguageTextLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("PolishLanguageLabel")).FirstOrDefault().text = localizationManager
+                                                                                                             .GetLocalizationDictionary()
+                                                                                                             ["PolishLanguageLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SaveButtonText")).FirstOrDefault().text = localizationManager
+                                                                                                        .GetLocalizationDictionary()
+                                                                                                        ["SaveButtonText"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("EnglishLanguageLabel")).FirstOrDefault().text = localizationManager
+                                                                                                              .GetLocalizationDictionary()
+                                                                                                              ["EnglishLanguageLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsMoveUpLabel")).FirstOrDefault().text = localizationManager
+                                                                                                             .GetLocalizationDictionary()
+                                                                                                             ["SettingsMoveUpLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsMoveDownLabel")).FirstOrDefault().text = localizationManager
+                                                                                                               .GetLocalizationDictionary()
+                                                                                                               ["SettingsMoveDownLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsMoveRightLabel")).FirstOrDefault().text = localizationManager
+                                                                                                                .GetLocalizationDictionary()
+                                                                                                                ["SettingsMoveRightLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsMoveLeftLabel")).FirstOrDefault().text = localizationManager
+                                                                                                               .GetLocalizationDictionary()
+                                                                                                               ["SettingsMoveLeftLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsShootLabel")).FirstOrDefault().text = localizationManager
+                                                                                                            .GetLocalizationDictionary()
+                                                                                                            ["SettingsShootLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsReloadLabel")).FirstOrDefault().text = localizationManager
+                                                                                                             .GetLocalizationDictionary()
+                                                                                                             ["SettingsReloadLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("SettingsFlashlightLabel")).FirstOrDefault().text = localizationManager
+                                                                                                                 .GetLocalizationDictionary()
+                                                                                                                 ["SettingsFlashlightLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("DeveloperLabel")).FirstOrDefault().text = localizationManager
+                                                                                                        .GetLocalizationDictionary()
+                                                                                                        ["DeveloperLabel"];
+
+            MenuTextItems.Where(x => x.transform.name.Equals("TestersLabel")).FirstOrDefault().text = localizationManager
+                                                                                                      .GetLocalizationDictionary()
+                                                                                                      ["TestersLabel"];
+        }
+        catch (NullReferenceException ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+    }
 }

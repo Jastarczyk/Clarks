@@ -1,0 +1,68 @@
+  {
+  "ItemsCollection": [
+    {
+      "ItemName": "LanguageTextLabel",
+      "Text": "Język"
+    },
+
+    {
+      "ItemName": "PolishLanguageLabel",
+      "Text": "Polski"
+    },
+
+    {
+      "ItemName": "SaveButtonText",
+      "Text": "Zapisz"
+    },
+
+    {
+      "ItemName": "EnglishLanguageLabel",
+      "Text": "Angielski"
+    },
+
+    {
+      "ItemName": "SettingsMoveUpLabel",
+      "Text": "Do góry"
+    },
+
+    {
+      "ItemName": "SettingsMoveDownLabel",
+      "Text": "W dół"
+    },
+
+    {
+      "ItemName": "SettingsMoveRightLabel",
+      "Text": "W prawo"
+    },
+
+    {
+      "ItemName": "SettingsMoveLeftLabel",
+      "Text": "W lewo"
+    },
+
+    {
+      "ItemName": "SettingsShootLabel",
+      "Text": "Strzał"
+    },
+
+    {
+      "ItemName": "SettingsReloadLabel",
+      "Text": "Przeładowanie"
+    },
+
+    {
+      "ItemName": "SettingsFlashlightLabel",
+      "Text": "Latarka"
+    },
+
+    {
+      "ItemName": "DeveloperLabel",
+      "Text": "Projektant"
+    },
+
+    {
+      "ItemName": "TestersLabel",
+      "Text": "Testerzy"
+    }
+  ]
+  }

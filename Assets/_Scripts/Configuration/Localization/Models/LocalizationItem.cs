@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Assets._Scripts.Global
 {
-    [Serializable]
+    [System.Serializable]
     public class LocalizationItemsCollection
     {
-        LocalizationItem[] ItemsCollection;
+        public LocalizationItem[] ItemsCollection;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class LocalizationItem
     {
-        public string ItemName { get; set; }
-        public string Text { get; set; }
+        public string ItemName;
+        public string Text;
     }
 }
