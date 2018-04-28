@@ -18,6 +18,7 @@
 *ProjectSettings
 *Temp
 *UnityPackageManager
+*BUILD
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

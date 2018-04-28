@@ -1,49 +1,89 @@
 ﻿using Assets._Scripts.Configuration.GameConfig.Model;
+using Assets._Scripts.Configuration.Localization;
+using System;
 using System.IO;
 using UnityEngine;
 
 namespace Assets._Scripts.Configuration.GameConfig
 {
-    class GameConfigManager
+    static class GameConfigManager
     {
         private static GameSettings gameSettings;
-
-        public GameConfigManager()
-        {
-            string settingFileFullPath = Path.Combine(Application.streamingAssetsPath, Conf.SettingFilePath);
-            gameSettings = LoadGameSettingsFile(settingFileFullPath);
-        }
+        private static string settingFileFullPath;
 
         //TODO should combine it with loading transalction file and replace load and save methods with generic types
         public static GameSettings GetGameSettings()
         {
+            if (gameSettings == null)
+            {
+                settingFileFullPath = Path.Combine(Application.streamingAssetsPath, Conf.SettingFilePath);
+                gameSettings = LoadGameSettingsFile(settingFileFullPath);
+            }
+
             return gameSettings;
         }
 
-        private GameSettings LoadGameSettingsFile(string path)
+        private static GameSettings LoadGameSettingsFile(string path)
         {
             if (!File.Exists(path))
             {
                 Debug.LogError("Can't found gameSetting file at path: " + path);
-                return new GameSettings();
             }
 
             string loadedData = File.ReadAllText(path);
             GameSettings loadedGameSettings = JsonUtility.FromJson<GameSettings>(loadedData);
 
+            loadedGameSettings = ValidateLoadedSettings(loadedGameSettings);
+            LoadPlayerPrefsBasingOnJson(loadedGameSettings);
+
             return loadedGameSettings;
         }
 
-        public void SaveGameSettingFile(string path)
+        public static void SaveGameSetting(GameSettings newSettings)
         {
-            if (!File.Exists(path))
+            newSettings = NewSettingOverrideProtector(newSettings);
+
+            if (!File.Exists(settingFileFullPath))
             {
-                Debug.LogError("Can't found gameSetting file at path: " + path);
+                Debug.LogError("Can't found gameSetting file at path: " + settingFileFullPath);
                 return;
             }
 
-            var serializedData = JsonUtility.ToJson(gameSettings);
-            File.WriteAllText(path, serializedData);
+            var serializedData = JsonUtility.ToJson(newSettings);
+            File.WriteAllText(settingFileFullPath, serializedData);
+        }
+
+        private static GameSettings ValidateLoadedSettings(GameSettings gameSettings)
+        {
+            gameSettings.Language = String.IsNullOrEmpty(gameSettings.Language) ? Languages.English.ToString(): gameSettings.Language;
+            gameSettings.SkipIntro = String.IsNullOrEmpty(gameSettings.SkipIntro) ? default(int).ToString() : gameSettings.SkipIntro;
+            gameSettings.SoundVolume = String.IsNullOrEmpty(gameSettings.SoundVolume) ? "100" : gameSettings.SoundVolume;
+
+            return gameSettings;
+        }
+
+        private static GameSettings NewSettingOverrideProtector(GameSettings newSettings)
+        {
+            newSettings.Language = String.IsNullOrEmpty(newSettings.Language) ? gameSettings.Language : newSettings.Language;
+            newSettings.SoundVolume = String.IsNullOrEmpty(newSettings.SoundVolume) ? gameSettings.SoundVolume : newSettings.SoundVolume;
+            newSettings.SkipIntro = String.IsNullOrEmpty(newSettings.SkipIntro) ? gameSettings.SkipIntro : newSettings.SkipIntro;
+
+            return newSettings;
+        }
+
+        private static void LoadPlayerPrefsBasingOnJson(GameSettings settings)
+        {
+            if (settings != null)
+            {
+                PlayerPrefs.DeleteAll();
+
+                PlayerPrefs.SetString(Conf.PlayerPrefSoundVolumeName, settings.SoundVolume);
+
+                PlayerPrefs.SetString(Conf.PlayerPrefIntroSkipName, settings.SkipIntro);
+
+                PlayerPrefs.SetString(Conf.PlayerPrefLanguageName, settings.Language);
+            }
+            else Debug.LogError("Trying to set player prefs with empty settings!");
         }
     }
 }

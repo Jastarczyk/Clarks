@@ -1,4 +1,4 @@
-  {
+﻿  {
   "ItemsCollection": [
     {
       "ItemName": "LanguageTextLabel",
@@ -63,6 +63,32 @@
     {
       "ItemName": "TestersLabel",
       "Text": "Testerzy"
+    },
+	
+	{
+      "ItemName": "IntroPage1Label",
+      "Text": "Mutacja niezidentyfikowanego wirusa, potocznie zwanego Skazicielem, doprowadziła do rozpowszechnienia się choroby, która po śmierci zamienia jej  nosiciela w abominację. Ona, posiada zaś jeden cel - całkowicie zgładzić rasę ludzką. Mówi się, że stworzenia te chodź przypominają ludzi, są pozbawione jakichkolwiek uczuć.  Wiele z miast zostało już niemal w całości opanowanych przez te plugawe istoty, a znalezienie bezpiecznego miejsca graniczny z cudem. Brak dostępu do mediów uniemożliwia  uzyskanie jakichkolwiek informacji czy przypadkiem w pobliżu nie znajduje się grupa  Skażonych. Atak może więc nadejść w najmniej oczekiwanym momencie."
+    },
+	
+	{
+      "ItemName": "IntroPage2Label",
+      "Text": "W miasteczku Idlingshed ulokowany jest pewien dom, zamieszkały przez podstarzałego człowieka o imieniu Clark. Był on jednych z tych ludzi, którzy przez innych nazywani byli dziwakami. Od zawsze był na domiar sceptyczny. Wciąż przekonywał sąsiadów, że szykuje się wojna. Gromadził zapasy jedzenia, uniezależnił się od dostawcy prądu, montując na dachu panele słoneczne. Mówiono również, że w swoim asortymencie posiada nielegalnie zakupioną broń. Co do wojny dużo się nie pomylił. Jednak gdy reszta ignorantów snuje się bezdusznie po okolicy, on wciąż wyczekuje na lepsze jutro. Podczas pewnej nocy, zapadł w głębszy sen niż zwykle, całkowicie zapominając aby wybudzić się i rutynowo sprawdzić czy okolica wciąż jest bezpieczna..."
+    },
+	
+	{
+      "ItemName": "DisplayEpilogAgainLabel",
+      "Text": "Nie pokazuj epilogu ponownie"
+    },
+
+	{
+      "ItemName": "BeginButtonText",
+      "Text": "Rozpocznij"
+    },
+	
+	{
+      "ItemName": "ContinueButtonText",
+      "Text": "Kontynuuj"
     }
+	
   ]
-  }
+}

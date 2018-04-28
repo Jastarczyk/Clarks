@@ -15,5 +15,9 @@ namespace Assets._Scripts.Configuration
             { Languages.English, "Translation/Default.json" },
             { Languages.Polish, "Translation/Polish.json" },
         };
+
+        public const string PlayerPrefSoundVolumeName = "SoundVolume";
+        public const string PlayerPrefLanguageName = "Language";
+        public const string PlayerPrefIntroSkipName = "SkipIntro";
     }
 }
