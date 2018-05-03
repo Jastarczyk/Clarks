@@ -32,7 +32,6 @@ public class IntroGUIManagment : MonoBehaviour
     public void StartButton_OnClick()
     {
         SceneManager.LoadScene("Level01");
-        //TODO find out how to not override gamesettings because rest of values are reseted if i implement this one :"
         GameConfigManager.SaveGameSetting(new GameSettings() { SkipIntro = IntroAskToggle.isOn ? "1" : "0" });
     }
 }

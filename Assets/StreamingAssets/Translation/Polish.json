@@ -88,6 +88,66 @@
 	{
       "ItemName": "ContinueButtonText",
       "Text": "Kontynuuj"
+    },
+	
+	{
+      "ItemName": "ReturnTextLabel",
+      "Text": "Powrót"
+    },
+	
+	{
+      "ItemName": "RestartTextLabel",
+      "Text": "Powtórz"
+    },
+	
+	{
+      "ItemName": "ExitTextLabel",
+      "Text": "Wyjdź"
+    },
+	
+	{
+      "ItemName": "GameMenuTextLabel",
+      "Text": "Menu Gry"
+    },
+	
+	{
+      "ItemName": "DeadInformationTextLabel",
+      "Text": "Clark (w końcu) umarł"
+    },
+	
+	{
+      "ItemName": "EarnedScoreTextLabel",
+      "Text": "Zdobyte punkty:"
+    },
+	
+	{
+      "ItemName": "ScoreTextLabel",
+      "Text": "Punkty:"
+    },
+	
+	{
+      "ItemName": "ReloadTextLabel",
+      "Text": "Wciśnij R  aby przeładować"
+    },
+
+	{
+      "ItemName": "ReloadingTextLabel",
+      "Text": "Przeładowywanie..."
+    },
+	
+	{
+      "ItemName": "BestScoreTextLabel",
+      "Text": "Najlepszy wynik:"
+    },
+	
+	{
+      "ItemName": "CountdownEndInfoTextLabel",
+      "Text": "Start!"
+    },
+	
+	{
+      "ItemName": "DoorHintMeshTextLabel",
+      "Text": "Naciśnij F aby otworzyć drzwi"
     }
 	
   ]

@@ -11,7 +11,6 @@ namespace Assets._Scripts.Configuration.GameConfig
         private static GameSettings gameSettings;
         private static string settingFileFullPath;
 
-        //TODO should combine it with loading transalction file and replace load and save methods with generic types
         public static GameSettings GetGameSettings()
         {
             if (gameSettings == null)
@@ -75,8 +74,6 @@ namespace Assets._Scripts.Configuration.GameConfig
         {
             if (settings != null)
             {
-                PlayerPrefs.DeleteAll();
-
                 PlayerPrefs.SetString(Conf.PlayerPrefSoundVolumeName, settings.SoundVolume);
 
                 PlayerPrefs.SetString(Conf.PlayerPrefIntroSkipName, settings.SkipIntro);

@@ -2,9 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Scoring : MonoBehaviour 
+public class ScoreManager : MonoBehaviour 
 {
-	public Text scoreText;
+
+    public int CurrentScore { get; set; }
+
+    public Text scoreText;
 	InGameMenuManager inGameMenu;
 	Text scoreValue;
 	Text multiplerText;
@@ -24,18 +27,13 @@ public class Scoring : MonoBehaviour
 		else multiplerText.text = null;
 	}
 
-	public int _currentScore
-	{
-		get { return currentScore; }
-	}
 		
 	void Start()
 	{
 		inGameMenu = GameObject.Find ("Canvas").GetComponent<InGameMenuManager>();
-		scoreValue = GameObject.Find ("scoreValue").GetComponent<Text>();
+		scoreValue = GameObject.Find ("ScoreValueText").GetComponent<Text>();
 		multiplerText = GameObject.Find ("Multipler").GetComponent<Text>();
 
-		scoreText.text = inGameMenu.scoreDisplay.text;
 		scoreValue.text = currentScore.ToString();
 	}
 
@@ -53,7 +51,6 @@ public class Scoring : MonoBehaviour
 		else multipler = 1;
 
 		currentScore += score;
-		scoreText.text = inGameMenu.scoreDisplay.text;
 		scoreValue.text = currentScore.ToString();
 		comboTimer = 0f;
 	}

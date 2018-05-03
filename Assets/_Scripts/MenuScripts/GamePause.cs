@@ -3,15 +3,18 @@ using System.Collections;
 
 public class GamePause : MonoBehaviour
 {
-    public bool Pause { get; private set; }
+    private GamePause()
+    { }
 
-	public void PauseOn()
+    public static bool Pause { get; private set; }
+
+	public static void PauseOn()
 	{
 		Time.timeScale = 0f;
         Pause = true;
 	}
 
-	public void PauseOff()
+	public static void PauseOff()
 	{
 		Time.timeScale = 1f;
         Pause = false;

@@ -1,32 +1,82 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
-public class ObjectDestroyManager : MonoBehaviour {
+[RequireComponent(typeof(AudioSource))]
 
-	public int objectEndurance;
-	float damageCooldown = 2f;
-	float timer;
+public class ObjectDestroyManager : MonoBehaviour
+{
+    public bool PlayRandomizedSound = true;
+    [SerializeField] private AudioClip[] HitSoundCollection;
+    [SerializeField] private AudioClip[] DestroySoundCollection;
 
-	void Update ()
-	{
-		timer += Time.deltaTime;
-	}
+    [SerializeField]
+    private int maximumObjectEndurance;
+    private int currentObjectEndurance;
+    private AudioSource localAudioSource;
 
-	void LateUpdate()
-	{
-		if(objectEndurance <= 0)
-		{
-			Destroy(gameObject, 0.2f);
-		}
+    private void Awake()
+    {
+        localAudioSource = GetComponent<AudioSource>();
+    }
 
-	}
-		void OnTriggerStay(Collider objectCol) 
-		{
-			if(objectCol.CompareTag("Target") && timer > damageCooldown)
-			{
-				objectEndurance--;
-				timer = 0;
+    private void Start()
+    {
 
-			}
-		}
+        CheckClipCollectionValidation(HitSoundCollection);
+        CheckClipCollectionValidation(DestroySoundCollection);
+
+        localAudioSource.clip = HitSoundCollection.FirstOrDefault();
+        currentObjectEndurance = maximumObjectEndurance;
+    }
+
+    private void LateUpdate()
+    {
+        if (currentObjectEndurance <= 0)
+        {
+            Destroy(gameObject, 0.2f);
+        }
+    }
+
+    public void DealDamage(int damage)
+    {
+        currentObjectEndurance -= TakeDamage(damage);
+    }
+
+    private int TakeDamage(int damageValue)
+    {
+        localAudioSource.clip = PlayRandomizedSound? GetRandomizedHitSound(HitSoundCollection) : GetSelectedHitSound(HitSoundCollection.FirstOrDefault());
+        localAudioSource.Play();
+
+        return damageValue;
+    }
+
+    private void OnDestroy()
+    {
+        localAudioSource.clip = PlayRandomizedSound ? GetRandomizedHitSound(DestroySoundCollection) : GetSelectedHitSound(DestroySoundCollection.FirstOrDefault());
+        localAudioSource.Play();
+    }
+
+    private AudioClip GetSelectedHitSound(AudioClip selectedClip)
+    {
+        return localAudioSource.clip = selectedClip;
+    }
+
+    private AudioClip GetRandomizedHitSound(AudioClip[] clipCollection)
+    {
+        int randomClip = UnityEngine.Random.Range(0, clipCollection.Length);
+        return localAudioSource.clip = clipCollection[randomClip];
+    }
+
+    private bool CheckClipCollectionValidation(AudioClip[] clipCollection)
+    {
+        if (!clipCollection.Any())
+        {
+            Debug.LogError(string.Format("No audio clip attached to object destroy script " +
+                "|| name: {0} || parent: {1} || position: {2}", gameObject.name, gameObject.transform.parent, gameObject.transform.position));
+
+            return false;
+        }
+        return true;
+    }
 }

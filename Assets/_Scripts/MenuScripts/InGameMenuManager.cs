@@ -3,210 +3,166 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets._Scripts.Player;
+using Assets._Scripts.Global;
 
-public class InGameMenuManager : MonoBehaviour 
+public class InGameMenuManager : MonoBehaviour
 {
-	GamePause gamePause;
-    private PlayerHealthManager playerHealth;
-	Scoring scoring;
-	EnemySpawner zombieSpawner;
+    #region Shown in Inspector
 
-	public AudioClip[] bells;
-	AudioSource bellSound;
+    [SerializeField] private Button PlayButton;
+    [SerializeField] private Button returnButton;
+    [SerializeField] private Button exitButton;
 
-	public Button playButton;
-	public Button returnButton;
-	public Button exitButton;
+    [SerializeField] private GameObject InGameMenu;
+    [SerializeField] private GameObject PlayerDeathPanel;
+    [SerializeField] private GameObject MainGUI;
 
-	public GameObject playButtonGO;
-	public GameObject inGameMenu;
-	public GameObject deadPlayerGO;
-	public GameObject gui;
-	public GameObject countDownGO;
+    [SerializeField] private Text ScoreValueTextLabel;
+    [SerializeField] private Text CountDownTextLabel;
+    [SerializeField] private Text BestScoreValueText;
+    [SerializeField] private Text EarnedScoreValueText;
 
-	Text scoreText;
-	Text bestScore;
-	Text bestScoreText;
+    #endregion
 
-	bool menuOn = false;
-	bool saved = false;
-	bool countdowned = false;
+    private PlayerHealthManager playerHealthManager;
+    private Text[] menuTextItems;
+    private ScoreManager scoring;
 
-	// language Texts
-
-	public Text returnText;
-	public Text restartText;
-	public Text exitText;
-	public Text titleClarkDead;
-	public Text deadScoreText; 
-	public Text gameMenuText;
-	public Text scoreDisplay;
-	public Text countDown;
-
-	public TextMesh doorHintText;
-
-	void Awake()
-	{
-		doorHintText = GameObject.Find ("DoorHintText").GetComponent<TextMesh>();
-
-        bestScore = GameObject.Find("bestscore").GetComponent<Text>();
-        scoreText = GameObject.Find("score").GetComponent<Text>();
-        scoreDisplay = GameObject.Find("ScoreDisplay").GetComponent<Text>();
-        bestScoreText = GameObject.Find("text:bestscore").GetComponent<Text>();
-        zombieSpawner = GameObject.Find("Spawners").GetComponent<EnemySpawner>();
-        countDown = GameObject.Find("Countdown").GetComponent<Text>();
-        gamePause = GameObject.Find("GlobalScriptsObject").GetComponent<GamePause>();
-        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthManager>();
-        scoring = GameObject.Find("ScoreDisplay").GetComponent<Scoring>();
-        bellSound = GetComponent<AudioSource>();
-
+    private void Awake()
+    {
+        menuTextItems = GameObject.FindGameObjectWithTag("ActiveGUI").GetComponentsInChildren<Text>();
+        playerHealthManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthManager>();
+        scoring = GetComponent<ScoreManager>();
     }
 
-	void Start () 
-	{	
-		inGameMenu.SetActive(false);
-		deadPlayerGO.SetActive(false);
-		LanguageChange();
+    private void Start()
+    {
+        PlayerHealthManager.OnPlayerDeath += PlayerHealthManager_OnPlayerDeath;
+        GlobalTimer.OnCountDownSecondValueChange += GlobalTimer_OnCountDownSecondValueChange;
+
+        SetSceneTranslation();
+        SetStartingGUIBegaviour();
+
+        CountDownTextLabel.gameObject.SetActive(true);
     }
-    //TODO rework whole script
-	void Update () 
-	{
-		CountDown();
 
-		if(playerHealth.IsDead)
-		{
-			ActiveMenu();
-			playButton.image.color = new Color(0.2F, 0.3F, 0.4F, 0.5F);
-			deadPlayerGO.SetActive(true);
-			scoreText.text = scoring._currentScore.ToString();
-			gui.SetActive(false);
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!InGameMenu.activeInHierarchy && !playerHealthManager.IsDead)
+            {
+                ActiveGameMenu();
+            }
+            else if (InGameMenu.activeInHierarchy && !playerHealthManager.IsDead)
+            {
+                DisactiveGameMenu();
+            }
+        }
+    }
 
-			if(!saved)
-			{
+    //On player's death event rise
+    private void PlayerHealthManager_OnPlayerDeath()
+    {
+        DisplayGameOverMenu();
+    }
 
-				if(scoring._currentScore > PlayerPrefs.GetInt("highestScore"))
-				{
-					PlayerPrefs.SetInt("highestScore", scoring._currentScore);
-				}
-				bestScore.text =  PlayerPrefs.GetInt("highestScore").ToString();
-				Debug.Log ( PlayerPrefs.GetInt("highestScore"));
-				saved = true;
-			}
+    private void GlobalTimer_OnCountDownSecondValueChange()
+    {
+        CountDownTextLabel.text = GlobalTimer.SecondLeftToStart.ToString();
 
-		}
+        if (GlobalTimer.SecondLeftToStart == 0)
+        {
+            CountDownTextLabel.text = TranslationManager.GetLocalizationDictionary()["CountdownEndInfoTextLabel"];
+            Invoke("DisableCountDownTextLabel", 1f);
+        }
+    }
 
-		if(Input.GetKeyDown(KeyCode.Escape) && !menuOn && !playerHealth.IsDead)
-			ActiveMenu();
+    private void DisableCountDownTextLabel()
+    {
+        CountDownTextLabel.gameObject.SetActive(false);
+    }
 
-		else if(Input.GetKeyDown(KeyCode.Escape) && menuOn && !playerHealth.IsDead)
-			DisactiveMenu();
-	}
+    private void DisplayGameOverMenu()
+    {
+        ActiveGameMenu();
+        PlayerDeathPanel.SetActive(true);
+        MainGUI.SetActive(false);
+        DisableReturnButton();
+        DisplayUserScores();
+    }
 
-	public void ActiveMenu()
-	{
-		inGameMenu.SetActive(true);
-		menuOn = true;
-		gamePause.PauseOn();
-	}
+    #region MenuInteractions
 
-	public void DisactiveMenu()
-	{
-		inGameMenu.SetActive(false);
-		menuOn = false;
-		gamePause.PauseOff();
-	}
+    public void ReturnButton_OnClick()
+    {
+        DisactiveGameMenu();
+    }
 
+    public void RestartButton_OnClick()
+    {
+        GamePause.PauseOff();
+        CancelInvoke();
+        SceneManager.LoadScene("Level01");
+    }
 
-	public void ReturnToGame()
-	{
-		DisactiveMenu();
-	}
+    public void ExitButton_OnClick()
+    {
+        GamePause.PauseOff();
+        SceneManager.LoadScene("MainMenu");
+    }
 
-	public void RestartGame()
-	{
-		gamePause.PauseOff();
-        SceneManager.LoadScene("game");
-	}
+    public void ActiveGameMenu()
+    {
+        InGameMenu.SetActive(true);
+        GamePause.PauseOn();
+    }
 
-	public void ExitGame()
-	{
-		gamePause.PauseOff();
-        SceneManager.LoadScene(0);
-	}
+    private void DisableReturnButton()
+    {
+        PlayButton.image.color = new Color(0.2F, 0.3F, 0.4F, 0.5F);
+        PlayButton.interactable = false;
+    }
 
-	void LanguageChange()
-	{
+    private void DisactiveGameMenu()
+    {
+        InGameMenu.SetActive(false);
+        GamePause.PauseOff();
+    }
 
-		if(PlayerPrefs.GetString("gameLanguage") == "Polish")
-		{
-			returnText.text = "Powrót";
-			restartText.text = "Powtórz";
-			exitText.text = "Wyjście";
-			titleClarkDead.text = "Clark (w końcu) zginął";
-			deadScoreText.text = "Zdobyte punkty:";
-			gameMenuText.text = "Menu gry";
-			scoreText.text = "Wynik: ";
-			bestScoreText.text = "Najlepszy wynik:";
-			scoreDisplay.text = "Wynik: ";
-			doorHintText.text = "Naciśnij 'F' aby otworzyć";
-		}
-		else 
-		{
-			returnText.text = "Return";
-			restartText.text = "Restart";
-			exitText.text = "Exit";
-			titleClarkDead.text = "Clark is (finally) dead";
-			deadScoreText.text = "Earned score: ";
-			gameMenuText.text = "Game menu";
-			scoreText.text = "Score: ";
-			bestScoreText.text = "Best score:";
-			scoreDisplay.text = "Score: ";
-			doorHintText.text = "Press 'F' to open";
-		}
-	}
+    #endregion
 
-	void CountDown()
-	{
-		if(!countdowned)
-		{
-			int buffor = (int)GlobalTimer.Timer;
+    private void SetStartingGUIBegaviour()
+    {
+        InGameMenu.SetActive(false);
+        PlayerDeathPanel.SetActive(false);
+    }
 
-			switch(buffor)
-			{
-			case 2: 
-			{ 
-				countDown.text = "3"; 
-			}
-				break;
-			case 3: 
-			{ 
-				countDown.text = "2"; 
-			}
-				break;
-			case 4: 
-			{ 
-				countDown.text = "1"; 
-			}
-				break;
-			case 5:
-			{ 
-				if(PlayerPrefs.GetString("gameLanguage") == "Polish")
-				    countDown.text = "start";
-				else countDown.text = "begin";
-				    bellSound.clip = bells[0]; 
-				bellSound.Play();
-			}
-				break;
+    private void DisplayUserScores()
+    {
+        EarnedScoreValueText.text = scoring.CurrentScore.ToString();
 
-				default: countDown.text = null;
-				break;
-			}
+        if (scoring.CurrentScore > PlayerPrefs.GetInt("highestScore"))
+        {
+            PlayerPrefs.SetInt("highestScore", scoring.CurrentScore);
+        }
 
-			if(GlobalTimer.Timer >= 5f)  
-			{
-				countdowned = true;
-				Destroy(countDownGO, 2f);
-			}
-		}
-	}
+        BestScoreValueText.text = PlayerPrefs.GetInt("highestScore").ToString();
+    }
+
+    private void SetSceneTranslation()
+    {
+        foreach (Text textLabel in menuTextItems)
+        {
+            if (TranslationManager.GetLocalizationDictionary().ContainsKey(textLabel.name))
+            {
+                textLabel.text = TranslationManager.GetLocalizationDictionary()[textLabel.name];
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GlobalTimer.OnCountDownSecondValueChange -= GlobalTimer_OnCountDownSecondValueChange;
+    }
 }

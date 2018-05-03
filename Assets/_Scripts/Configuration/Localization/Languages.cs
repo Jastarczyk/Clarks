@@ -7,7 +7,7 @@ namespace Assets._Scripts.Configuration.Localization
 {
     public enum Languages
     {
-        Polish,
-        English
+        English = 0, //should be alawys zero as default language
+        Polish
     }
 }

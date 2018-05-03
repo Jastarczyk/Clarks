@@ -6,6 +6,9 @@ using Assets._Scripts.Global;
 
 public class ZombieController : MonoBehaviour
 {
+    // should not be in a zombie controller, this kind of object requests extracted model
+    [SerializeField] private int ZombieAttackPower = 1;
+
     public float InitialMovementSpeed = 2f;
 
     //define zombie movement speed increasing by time
@@ -17,11 +20,12 @@ public class ZombieController : MonoBehaviour
 
     private PlayerController playerController;
     private NavMeshAgent navMeshAgent;
-    private Scoring scoring;
+    private ScoreManager scoring;
     private float IncreaseSpeedTimePeroid = 1f;
 
     private EnemySoundManagement soundManager;
     private EnemyHealthManagement enemyHealthManagement;
+    private ObjectDestroyManager objectDestoryManager;
 
     private CapsuleCollider zombieCollider;
     private EnemyAnimationManager zombieAnimator;
@@ -30,7 +34,7 @@ public class ZombieController : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        scoring = GameObject.Find("ScoreDisplay").GetComponent<Scoring>();
+        scoring = GameObject.FindGameObjectWithTag("GlobalScriptHolder").GetComponent<ScoreManager>();
 
         soundManager = GetComponent<EnemySoundManagement>();
         enemyHealthManagement = GetComponent<EnemyHealthManagement>();
@@ -70,7 +74,7 @@ public class ZombieController : MonoBehaviour
             navMeshAgent.speed += deltaSpeed;
         }
     }
-       
+
     void OnTriggerEnter(Collider hittedCollider)
     {
         if (hittedCollider.CompareTag("Bullet"))
@@ -79,11 +83,21 @@ public class ZombieController : MonoBehaviour
         }
     }
 
-    //rework it kinda
-    void OnTriggerStay()
+    void OnTriggerStay(Collider collider)
     {
         if (hitTimer > damageCooldown)
         {
+            objectDestoryManager = collider.gameObject.GetComponent<ObjectDestroyManager>();
+
+            if (objectDestoryManager == null)
+            {
+                Debug.LogError("Trying to access empty collider, check it please: " 
+                    + collider.name + " " + collider.gameObject.transform.parent);
+
+                return;
+            }
+
+            objectDestoryManager.DealDamage(ZombieAttackPower);
             zombieAnimator.PlayAttackAnimation();
             soundManager.PlayRandomSoundOfType(AudioClipsTypes.Attack);
             hitTimer = 0;

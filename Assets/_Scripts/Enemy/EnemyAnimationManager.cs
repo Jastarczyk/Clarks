@@ -15,12 +15,6 @@ namespace Assets._Scripts.Enemy
         {
             animator = GetComponent<Animator>();
         }
-
-        private void Start()
-        {
-
-        }
-
         //Learn how to deal with animation because this is so bad :( TODO
         public void PlayDeathAnimation()
         {

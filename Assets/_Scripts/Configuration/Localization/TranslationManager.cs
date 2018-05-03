@@ -81,7 +81,7 @@ namespace Assets._Scripts.Global
 
             if (collection.ItemsCollection == null)
             {
-                Debug.Log("Loaded Collection is empty");
+                Debug.LogError("Loaded Collection is empty");
                 return new Dictionary<string, string>();
             }
 

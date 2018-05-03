@@ -49,7 +49,6 @@ namespace Assets._Scripts.Global
         private void IncreaseDifficultyLevel(int amount = 1)
         {
             currentDifficultyLevel += amount;
-            Debug.Log(currentDifficultyLevel);
             DifficultyChanged.Invoke();
         }
     }

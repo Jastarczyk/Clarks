@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!gamePause.Pause)
+        if (!GamePause.Pause)
         {
             Shooting();
             FlashLightControl();

@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Transform playerTransform;
 	private float spawningTimer;
+    private float minDistanceSpawnFromPlayer = 5f;   
 
     public float GetSpawningTimer()
     {
@@ -28,7 +29,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (SpawnIntervalTime == default(float))
         {
-            Debug.Log("Please set Spawn Intervals.");
+            Debug.LogError("Please set Spawn Intervals.");
         }
 
         DifficultyManager.DifficultyChanged += DifficultyManager_DifficultyChanged;
@@ -38,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
 	{
         spawningTimer += Time.deltaTime;
 
-        if (spawningTimer > SpawnIntervalTime)
+        if (spawningTimer > SpawnIntervalTime && GlobalTimer.GameStarted)
         {
             SpawnZombieAtRandomPlace();
             spawningTimer = default(float);
@@ -53,8 +54,23 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnZombieAtRandomPlace()
 	{
         int spawningPointIndex = Random.Range(0, EnemySpawners.Length);
-		Instantiate(EnemyPrefab, EnemySpawners[spawningPointIndex].transform.position, Quaternion.LookRotation(playerTransform.position));
-	}
+        float distanceToPlayer = Vector3.Distance(EnemySpawners[spawningPointIndex].transform.position, playerTransform.position);
+
+        // it was implemented to prevent spawning the enemy a front/on the player
+        while (minDistanceSpawnFromPlayer > distanceToPlayer)
+        {
+            spawningPointIndex = Random.Range(0, EnemySpawners.Length);
+            distanceToPlayer = Vector3.Distance(EnemySpawners[spawningPointIndex].transform.position, playerTransform.position);
+            Debug.Log("Recalculate respawin point");
+
+            if (minDistanceSpawnFromPlayer < distanceToPlayer)
+            {
+                break;
+            }
+        }
+
+        Instantiate(EnemyPrefab, EnemySpawners[spawningPointIndex].transform.position, Quaternion.LookRotation(playerTransform.position));
+    }
 
     private void DecreaseSpawningTime()
     {

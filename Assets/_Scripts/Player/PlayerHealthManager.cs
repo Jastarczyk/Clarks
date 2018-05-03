@@ -8,6 +8,9 @@ namespace Assets._Scripts.Player
 {
     class PlayerHealthManager : PlayerModel
     {
+        public delegate void PlayerDeathHandler();
+        public static event PlayerDeathHandler OnPlayerDeath;
+
         private void Start()
         {
             MaximumHealth = 1f;
@@ -21,6 +24,11 @@ namespace Assets._Scripts.Player
             {
                 CurrentHealth -= damageValue;
                 IsDead = CheckIfPlayerIsDead();
+
+                if (IsDead)
+                {
+                    OnPlayerDeath.Invoke();
+                }
             }
             else
             {

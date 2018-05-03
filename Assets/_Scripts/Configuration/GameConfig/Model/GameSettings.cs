@@ -10,8 +10,7 @@ namespace Assets._Scripts.Configuration.GameConfig.Model
     public class GameSettings
     {
         public string Language;
-        //sound volume as string type is much easer to deal with (but not scrict value control)
-        public string SoundVolume;
+        public string SoundVolume; //sound volume as string type is much easer to deal with (but not scrict value control)
         public string SkipIntro;
     }
 }

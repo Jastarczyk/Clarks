@@ -88,7 +88,67 @@
 	{
       "ItemName": "ContinueButtonText",
       "Text": "Continue"
-    }
+    },
+	
+	{
+      "ItemName": "ReturnTextLabel",
+      "Text": "Return"
+    },
+	
+	{
+      "ItemName": "RestartTextLabel",
+      "Text": "Restart"
+    },
+	
+	{
+      "ItemName": "ExitTextLabel",
+      "Text": "Exit"
+    },
+	
+	{
+      "ItemName": "GameMenuTextLabel",
+      "Text": "Game Menu"
+    },
+	
+	{
+      "ItemName": "DeadInformationTextLabel",
+      "Text": "Clark is (finally) dead"
+    },
+	
+	{
+      "ItemName": "EarnedScoreTextLabel",
+      "Text": "Earned score:"
+    },
+	
+	{
+      "ItemName": "ScoreTextLabel",
+      "Text": "Score:"
+    },
+	
+	{
+      "ItemName": "ReloadTextLabel",
+      "Text": "Press R to reload!"
+    },
 
+	{
+      "ItemName": "ReloadingTextLabel",
+      "Text": "Reloading..."
+    },
+	
+	{
+      "ItemName": "BestScoreTextLabel",
+      "Text": "Best score:"
+    },
+	
+	{
+      "ItemName": "CountdownEndInfoTextLabel",
+      "Text": "Begin!"
+    },
+	
+{
+      "ItemName": "DoorHintMeshTextLabel",
+      "Text": "Press F to open doors"
+    }
+	
   ]
 }

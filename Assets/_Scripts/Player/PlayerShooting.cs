@@ -17,7 +17,7 @@ public class PlayerShooting : MonoBehaviour
     private Transform bulletSpawn;
 
     private Text reloadText;
-    private Text reloadingText;
+    private Text reloadingText; 
 
     private float BetweenShootsTimer = 0f;
 
@@ -30,8 +30,8 @@ public class PlayerShooting : MonoBehaviour
         }
 
         bulletSpawn = GameObject.Find("BulletSpawnPoint").GetComponent<Transform>();
-        reloadText = GameObject.Find("ReloadText").GetComponent<Text>();
-        reloadingText = GameObject.Find("ReloadingText").GetComponent<Text>();;
+        reloadText = GameObject.Find("ReloadTextLabel").GetComponent<Text>();
+        reloadingText = GameObject.Find("ReloadingTextLabel").GetComponent<Text>();;
     }
 
     void Start()

@@ -287,7 +287,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Scripts\AttachedToObjects\DoorsOpen.cs" />
+    <Compile Include="Assets\_Scripts\AttachedToObjects\DoorSidesKind.cs" />
+    <Compile Include="Assets\_Scripts\AttachedToObjects\DoorOpenManager.cs" />
     <Compile Include="Assets\_Scripts\AttachedToObjects\FlashLightScript.cs" />
     <Compile Include="Assets\_Scripts\AttachedToObjects\Weapons\FireArm.cs" />
     <Compile Include="Assets\_Scripts\AttachedToObjects\Weapons\Pistol.cs" />
@@ -296,7 +297,6 @@
     <Compile Include="Assets\_Scripts\Configuration\GameConfig\GameConfigManager.cs" />
     <Compile Include="Assets\_Scripts\Configuration\GameConfig\Model\GameSettings.cs" />
     <Compile Include="Assets\_Scripts\Configuration\Localization\Languages.cs" />
-    <Compile Include="Assets\_Scripts\Configuration\Localization\LanguagesOld.cs" />
     <Compile Include="Assets\_Scripts\Configuration\Localization\Models\LocalizationItem.cs" />
     <Compile Include="Assets\_Scripts\Configuration\Localization\TranslationManager.cs" />
     <Compile Include="Assets\_Scripts\Enemy\EnemyAnimationManager.cs" />
@@ -308,9 +308,9 @@
     <Compile Include="Assets\_Scripts\Global\DifficultyManager.cs" />
     <Compile Include="Assets\_Scripts\Global\GameInitalization.cs" />
     <Compile Include="Assets\_Scripts\Global\GlobalTimer.cs" />
-    <Compile Include="Assets\_Scripts\Global\MusicBoxManager.cs" />
+    <Compile Include="Assets\_Scripts\Global\AudioManager.cs" />
     <Compile Include="Assets\_Scripts\Global\ObjectDestroyManager.cs" />
-    <Compile Include="Assets\_Scripts\Global\Scoring.cs" />
+    <Compile Include="Assets\_Scripts\Global\ScoreManager.cs" />
     <Compile Include="Assets\_Scripts\LightScripts\BlinkingLight.cs" />
     <Compile Include="Assets\_Scripts\LightScripts\LightMenuManager.cs" />
     <Compile Include="Assets\_Scripts\MenuScripts\GamePause.cs" />
